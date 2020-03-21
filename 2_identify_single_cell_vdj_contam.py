@@ -2,13 +2,29 @@
 import sys,time,re,os
 import numpy  as np
 import pandas as pd
-import python_functions as pf
+import support_functions as pf
+from optparse import OptionParser
 
 if __name__ == '__main__':
-  cell_hash = pf.AutoVivification()
+  usage = "\n<PATH>/%prog -h"
+  parser = OptionParser(usage=usage)
+  parser.add_option("-i", "--input", default = False, dest="i", help="VDJ Decontamination Results Directory, Default = False")
+  (opt, args) = parser.parse_args()
+
+  results_dir    = opt.i
+
+  if opt.i == False:
+	  sys.exit("\nInvalid Arguements! Must use [-i]. Use [-h] for help\n")
   
-  vdj_cellumi_dir         = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/CellUMI_files/"
-  results_contam_cells_fh = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/FLAGGED_contam_cellumi.VDJ.txt"
+  # Set Results Directory Path
+  if results_dir[-1:] != '/':
+    results_dir += '/'
+  vdj_cellumi_dir         = results_dir + "CellUMI_files/"
+  if os.path.isdir(vdj_cellumi_dir) == False:
+    sys.exit("\nCellUMI_files sub-directory does not exist\n")
+  results_contam_cells_fh = results_dir + "FLAGGED_contam_cellumi.VDJ.txt"
+  
+  cell_hash = pf.AutoVivification()
   
   for root,dirs,filenames in os.walk(vdj_cellumi_dir):
 	  for file in filenames:

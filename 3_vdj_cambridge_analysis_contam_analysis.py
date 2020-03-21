@@ -2,7 +2,8 @@
 import sys,time,re,os
 import numpy  as np
 import pandas as pd
-import python_functions as pf
+import support_functions as pf
+from optparse import OptionParser
 
 # PURPOSE: implement the Cambrige Method for Identifying which sample has sufficient cell-UMI contamination
 
@@ -49,13 +50,27 @@ def get_all_read_IDs_using_cellUMIs(cellumi_array,fh):
 
 
 if __name__ == '__main__':
+  usage = "\n<PATH>/%prog -h"
+  parser = OptionParser(usage=usage)
+  parser.add_option("-i", "--input", default = False, dest="i", help="VDJ Decontamination Results Directory, Default = False")
+  parser.add_option("-t", "--thresh", default = 0.8, dest="t", help="Rotia Contamination Threshold, Default = 0.8")
+  (opt, args) = parser.parse_args()
+
+  results_dir   = opt.i
+  CONTAM_THRESH = opt.t    # Threshold of percentage depth to keep a sample for a given contaminated cell-UMI
+
+  if opt.i == False:
+	  sys.exit("\nInvalid Arguements! Must use [-i], option [-o] recommended. Use [-h] for help\n")
+  
+  
   # INPUT
-  vdj_contam_results    = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/FLAGGED_contam_cellumi.VDJ.txt"
-  read_info_cellumi_dir = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/CellUMI_files/"
-  CONTAM_THRESH         = 0.80    # Threshold of percentage depth to keep a sample for a given contaminated cell-UMI
+  if results_dir[-1:] != '/':
+    results_dir += '/'
+  vdj_contam_results    = results_dir + "FLAGGED_contam_cellumi.VDJ.txt"
+  read_info_cellumi_dir = results_dir + "CellUMI_files/"
   
   # OUTPUT DIRECTORY
-  reads_to_rm_output_dir = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/reads_to_remove/"
+  reads_to_rm_output_dir = results_dir + "reads_to_remove/"
   if os.path.isdir(reads_to_rm_output_dir) == False:
     os.mkdir(reads_to_rm_output_dir)
 
