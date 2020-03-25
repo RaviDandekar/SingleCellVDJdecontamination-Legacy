@@ -23,7 +23,7 @@ def get_sample_with_highest_swap_fraction(contam_str, CONTAM_THRESH):
       max_count = c
       sample_to_keep = s
     
-  swap_frac      = max_count/sum_counts
+  swap_frac      = float(max_count/sum_counts)
   # if one sample is equal or greater than the set threshold, keep that sample, but remove the cell-UMI from the remaining samples
   # if no sample passes the threshold for a given cell-UMI, remove this cell-UMI from all samples contaminated with it
   if swap_frac >= CONTAM_THRESH:
@@ -57,11 +57,10 @@ if __name__ == '__main__':
   (opt, args) = parser.parse_args()
 
   results_dir   = opt.i
-  CONTAM_THRESH = opt.t    # Threshold of percentage depth to keep a sample for a given contaminated cell-UMI
+  CONTAM_THRESH = float(opt.t)    # Threshold of percentage depth to keep a sample for a given contaminated cell-UMI
 
   if opt.i == False:
 	  sys.exit("\nInvalid Arguements! Must use [-i], option [-o] recommended. Use [-h] for help\n")
-  
   
   # INPUT
   if results_dir[-1:] != '/':

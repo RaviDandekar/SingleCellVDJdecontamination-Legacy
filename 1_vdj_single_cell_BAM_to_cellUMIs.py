@@ -48,9 +48,9 @@ if __name__ == '__main__':
   parser.add_option("-t", "--threads", default = 1, dest="t", help="Thread count, Default = 1")
   (opt, args) = parser.parse_args()
 
-  input_vdj_dir    = opt.i
-  results_dir      = opt.o    # Results directory hub
-  THREADS          = opt.t    # Threads
+  input_vdj_dir    = opt.i         # Cellranger VDJ output
+  results_dir      = opt.o         # Results directory hub
+  THREADS          = int(opt.t)    # Threads
 
   if opt.i == False:
 	  sys.exit("\nInvalid Arguements! Must use [-i], option [-o] recommended. Use [-h] for help\n")
@@ -58,10 +58,7 @@ if __name__ == '__main__':
   # Create list of BAM files
   bam_list = []
   sample_hash = pf.AutoVivification()
-  #vdj_dir_bcr_new     = "/data/ryan/10x/2020_vdj_fastqs/2020_vdj_results/BCR/"
-  #vdj_dir_bcr_old     = "/data/rdandekar/Reruns_cellranger/All_VDJ_cellranger_results_Dec2018/"
-  #results_dir = "/data/rdandekar/rprojects/sc_analysis_2019/contamination_analysis/vdj_contamination_analysis/decontam_Jan2020/results_all_BCR/round1/CellUMI_files/"
-  
+
   # Create nested Results Directory
   if results_dir[-1:] != '/':
     results_dir += '/'

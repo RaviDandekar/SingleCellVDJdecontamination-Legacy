@@ -53,8 +53,8 @@ if __name__ == '__main__':
 
   input_vdj_dir    = opt.i
   sc_vdj_fastq_dir = opt.f
-  results_dir      = opt.o    # Results directory hub
-  THREADS          = opt.t    # Threads
+  results_dir      = opt.o      # Results directory hub
+  THREADS          = int(opt.t) # Threads
 
   if opt.i == False:
 	  sys.exit("\nInvalid Arguements! Must use [-i,-f], option [-o] recommended. Use [-h] for help\n")
